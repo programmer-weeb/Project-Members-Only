@@ -1,3 +1,4 @@
+require('dotenv').config()
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -8,12 +9,17 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 require("dotenv").config();
 const bcrypt = require('bcryptjs')
+const mongoose = require('mongoose');
 
 
 const indexRouter = require('./routes/index');
 const UserModel = require('./models/UserModel');
 
 const app = express();
+mongoose.connect(process.env.DBConnectionString)
+	.then(res => {
+		console.log('db connected succ');
+	})
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
