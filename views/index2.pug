@@ -15,7 +15,8 @@ block content
                     li= message.title
                     li= message.timestamp
                     li created by
-                    li= message.createdBy.firstName+message.createdBy.firstName 
+                    //- li= message.createdBy.firstName+message.createdBy.firstName 
+                    li= message.createdBy.username
                     li his password is
                     li= message.createdBy.password
                 br 

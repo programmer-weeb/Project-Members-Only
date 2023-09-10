@@ -47,11 +47,11 @@ router.get('/log-in', async (req, res, next) => {
 router.get('/log-out', (req, res, next) => {
 	req.logout((err) => {
 		if (err) next(err)
-		res.redirect('/')	
+		res.redirect('/')
 	})
 })
 
-router.post('/log-in', passport.authenticate('local', {successRedirect: '/', failureMessage: '/log-in'}))
+router.post('/log-in', passport.authenticate('local', { successRedirect: '/', failureMessage: '/log-in' }))
 
 router.get('/user/:id', async (req, res, next) => {
 	const user = UserModel.findById(req.params.id)
@@ -62,6 +62,25 @@ router.get('/message/:id', async (req, res, next) => {
 	const message = MessageModel.findById(req.params.id)
 	res.send(message)
 })
+
+router.get('/create-message', (req, res, next) => {
+	res.render('message_form')
+})
+
+router.post('/create-message', [
+	body("messageTitle").trim().isLength({ min: 1 }).withMessage("Title must not be empty"),
+	body("messageText").trim().isLength({ min: 1 }).withMessage("Text must not be empty"),
+	async (req, res, next) => {
+		const newMessage = new MessageModel({
+			title: req.body.messageTitle,
+			text: req.body.messageText,
+			createdBy: req.user,
+		})
+
+		await newMessage.save()
+		res.redirect('/')
+	}
+])
 
 module.exports = router;
 
