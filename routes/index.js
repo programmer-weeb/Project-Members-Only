@@ -44,6 +44,13 @@ router.get('/log-in', async (req, res, next) => {
 	res.render('login_form')
 })
 
+router.get('/log-out', (req, res, next) => {
+	req.logout((err) => {
+		if (err) next(err)
+		res.redirect('/')	
+	})
+})
+
 router.post('/log-in', passport.authenticate('local', {successRedirect: '/', failureMessage: '/log-in'}))
 
 router.get('/user/:id', async (req, res, next) => {
