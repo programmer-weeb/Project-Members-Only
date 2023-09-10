@@ -68,6 +68,12 @@ app.use(session({ secret: 'your-secret-key', resave: false, saveUninitialized: f
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Access the user from anywhere in our application
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user
+	next()
+})
+
 app.use('/', indexRouter);
 
 // catch 404 and forward to error handler
