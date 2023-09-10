@@ -22,9 +22,18 @@ router.get('/sign-up', async (req, res, next) => {
 router.post('/sign-up', [
 	body('username').trim().escape(),
 	body('password').trim().escape(),
-	body('confirmPassword').trim().escape(),
+	body('confirmPassword').trim().escape()
+		.custom((value, { req }) => {
+			return value === req.body.password;
+		}),
 	async (req, res, next) => {
+
+
 		try {
+			const errors = validationResult(req);
+			if (!errors.isEmpty()) {
+				res.send(errors)
+			}
 			bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
 				const newUser = new UserModel({
 					username: req.body.username,
