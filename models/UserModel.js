@@ -10,8 +10,8 @@ const userSchema = new mongoose.Schema({
     password: String,
     membershipStatus: {
         type: String,
-        enum: ['Free', 'Premium'], // Adjust as needed
-        default: 'Free',
+        enum: ['Admin', 'NotAdmin'], // Adjust as needed
+        default: 'NotAdmin',
     },
 })
 

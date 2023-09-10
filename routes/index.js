@@ -2,16 +2,49 @@ var express = require('express');
 const UserModel = require('../models/UserModel');
 const MessageModel = require('../models/MessageModel');
 var router = express.Router();
+const bcrypt = require('bcryptjs')
+const { body, validationResult } = require('express-validator');
+const passport = require('passport');
 
 router.get('/', async (req, res, next) => {
 	// display all message in homePage
 	const allMessages = await MessageModel.find().populate('createdBy').exec()
-	res.render('layout', {
+	res.render('index2', {
 		title: 'titleeeeee',
 		user: req.user,
 		messages: allMessages,
 	})
 });
+
+router.get('/sign-up', async (req, res, next) => {
+	res.render('signup_form')
+})
+router.post('/sign-up', [
+	body('username').trim().escape(),
+	body('password').trim().escape(),
+	body('confirmPassword').trim().escape(),
+	async (req, res, next) => {
+		try {
+			bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+				const newUser = new UserModel({
+					username: req.body.username,
+					password: hashedPassword,
+				})
+				await newUser.save()
+				console.log(newUser);
+				res.redirect('/log-in')
+			})
+		} catch (e) {
+
+		}
+	}
+])
+
+router.get('/log-in', async (req, res, next) => {
+	res.render('login_form')
+})
+
+router.post('/log-in', passport.authenticate('local', {successRedirect: '/', failureMessage: '/log-in'}))
 
 router.get('/user/:id', async (req, res, next) => {
 	const user = UserModel.findById(req.params.id)

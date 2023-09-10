@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    if(messages)
+        if (!user)
+            each message in messages 
+                ul 
+                    li= message.title
+                    li= message.timestamp
+                br
+                br
+        if (user) 
+            each message in messages 
+                ul 
+                    li= message.title
+                    li= message.timestamp
+                    li created by
+                    li= message.createdBy.firstName+message.createdBy.firstName 
+                    li his password is
+                    li= message.createdBy.password
+                br 
+                br
+
