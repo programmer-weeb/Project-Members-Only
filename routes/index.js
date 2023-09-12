@@ -10,35 +10,7 @@ const controllers = require('../controlls/controllers')
 router.get('/', controllers.getHome);
 
 router.get('/sign-up', controllers.getSignUp)
-router.post('/sign-up', [
-	body('username').trim().escape(),
-	body('password').trim().escape(),
-	body('confirmPassword').trim().escape()
-		.custom((value, { req }) => {
-			return value === req.body.password;
-		}),
-	async (req, res, next) => {
-
-		try {
-			const errors = validationResult(req);
-			if (!errors.isEmpty()) {
-				res.send(errors)
-			}
-			bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
-				if (err) res.send(err)
-				const newUser = new UserModel({
-					username: req.body.username,
-					password: hashedPassword,
-				})
-				await newUser.save()
-				console.log(newUser);
-				res.redirect('/log-in')
-			})
-		} catch (e) {
-			res.send(e)
-		}
-	}
-])
+router.post('/sign-up', controllers.postSignUp)
 
 router.get('/log-in', async (req, res, next) => {
 	res.render('login_form')

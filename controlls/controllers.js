@@ -1,5 +1,7 @@
 const passport = require("passport");
 const MessageModel = require("../models/MessageModel");
+const UserModel = require("../models/UserModel");
+const { body, validationResult } = require('express-validator');
 
 
 exports.postLogin = passport.authenticate('local', { successRedirect: '/', failureMessage: '/log-in' })
@@ -17,3 +19,33 @@ exports.getHome = async (req, res, next) => {
 exports.getSignUp = async (req, res, next) => {
     res.render('signup_form')
 }
+
+exports.postSignUp = [
+    body('username').trim().escape(),
+    body('password').trim().escape(),
+    body('confirmPassword').trim().escape()
+        .custom((value, { req }) => {
+            return value === req.body.password;
+        }),
+    async (req, res, next) => {
+
+        try {
+            const errors = validationResult(req);
+            if (!errors.isEmpty()) {
+                res.send(errors)
+            }
+            bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+                if (err) res.send(err)
+                const newUser = new UserModel({
+                    username: req.body.username,
+                    password: hashedPassword,
+                })
+                await newUser.save()
+                console.log(newUser);
+                res.redirect('/log-in')
+            })
+        } catch (e) {
+            res.send(e)
+        }
+    }
+]
