@@ -9,9 +9,7 @@ const controllers = require('../controlls/controllers')
 
 router.get('/', controllers.getHome);
 
-router.get('/sign-up', async (req, res, next) => {
-	res.render('signup_form')
-})
+router.get('/sign-up', controllers.getSignUp)
 router.post('/sign-up', [
 	body('username').trim().escape(),
 	body('password').trim().escape(),

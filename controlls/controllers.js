@@ -13,3 +13,7 @@ exports.getHome = async (req, res, next) => {
         messages: allMessages,
     })
 }
+
+exports.getSignUp = async (req, res, next) => {
+    res.render('signup_form')
+}
