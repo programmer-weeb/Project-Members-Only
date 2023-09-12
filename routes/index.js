@@ -18,19 +18,7 @@ router.get('/log-out', controllers.logout)
 
 router.post('/log-in', controllers.postLogin)
 
-router.get('/user/:id', async (req, res, next) => {
-	const user = UserModel.findById(req.params.id)
-	res.send(user)
-
-})
-router.get('/message/:id', async (req, res, next) => {
-	const message = MessageModel.findById(req.params.id)
-	res.send(message)
-})
-
-router.get('/create-message', (req, res, next) => {
-	res.render('message_form')
-})
+router.get('/create-message', controllers.getCreateMessage)
 
 router.post('/create-message', [
 	body("messageTitle").trim().isLength({ min: 1 }).withMessage("Title must not be empty"),

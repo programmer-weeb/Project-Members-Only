@@ -60,3 +60,7 @@ exports.logout = (req, res, next) => {
         res.redirect('/')
     })
 }
+
+exports.getCreateMessage = (req, res, next) => {
+	res.render('message_form')
+}
