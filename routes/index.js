@@ -7,15 +7,7 @@ const { body, validationResult } = require('express-validator');
 const passport = require('passport');
 const controllers = require('../controlls/controllers')
 
-router.get('/', async (req, res, next) => {
-	// display all message in homePage
-	const allMessages = await MessageModel.find().populate('createdBy').exec()
-	res.render('index2', {
-		title: 'titleeeeee',
-		user: req.user,
-		messages: allMessages,
-	})
-});
+router.get('/', controllers.getHome);
 
 router.get('/sign-up', async (req, res, next) => {
 	res.render('signup_form')
