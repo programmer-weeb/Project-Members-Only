@@ -53,3 +53,10 @@ exports.postSignUp = [
 exports.getLogin = async (req, res, next) => {
     res.render('login_form')
 }
+
+exports.logout = (req, res, next) => {
+    req.logout((err) => {
+        if (err) next(err)
+        res.redirect('/')
+    })
+}

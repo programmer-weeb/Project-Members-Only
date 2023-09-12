@@ -14,12 +14,7 @@ router.post('/sign-up', controllers.postSignUp)
 
 router.get('/log-in', controllers.getLogin)
 
-router.get('/log-out', (req, res, next) => {
-	req.logout((err) => {
-		if (err) next(err)
-		res.redirect('/')
-	})
-})
+router.get('/log-out', controllers.logout)
 
 router.post('/log-in', controllers.postLogin)
 
