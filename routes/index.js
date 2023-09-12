@@ -5,6 +5,7 @@ var router = express.Router();
 const bcrypt = require('bcryptjs')
 const { body, validationResult } = require('express-validator');
 const passport = require('passport');
+const controllers = require('../controlls/controllers')
 
 router.get('/', async (req, res, next) => {
 	// display all message in homePage
@@ -28,13 +29,13 @@ router.post('/sign-up', [
 		}),
 	async (req, res, next) => {
 
-
 		try {
 			const errors = validationResult(req);
 			if (!errors.isEmpty()) {
 				res.send(errors)
 			}
 			bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+				if (err) res.send(err)
 				const newUser = new UserModel({
 					username: req.body.username,
 					password: hashedPassword,
@@ -44,7 +45,7 @@ router.post('/sign-up', [
 				res.redirect('/log-in')
 			})
 		} catch (e) {
-
+			res.send(e)
 		}
 	}
 ])
@@ -60,7 +61,7 @@ router.get('/log-out', (req, res, next) => {
 	})
 })
 
-router.post('/log-in', passport.authenticate('local', { successRedirect: '/', failureMessage: '/log-in' }))
+router.post('/log-in', controllers.postLogin)
 
 router.get('/user/:id', async (req, res, next) => {
 	const user = UserModel.findById(req.params.id)
