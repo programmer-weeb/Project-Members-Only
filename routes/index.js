@@ -12,9 +12,7 @@ router.get('/', controllers.getHome);
 router.get('/sign-up', controllers.getSignUp)
 router.post('/sign-up', controllers.postSignUp)
 
-router.get('/log-in', async (req, res, next) => {
-	res.render('login_form')
-})
+router.get('/log-in', controllers.getLogin)
 
 router.get('/log-out', (req, res, next) => {
 	req.logout((err) => {
