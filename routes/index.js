@@ -20,20 +20,7 @@ router.post('/log-in', controllers.postLogin)
 
 router.get('/create-message', controllers.getCreateMessage)
 
-router.post('/create-message', [
-	body("messageTitle").trim().isLength({ min: 1 }).withMessage("Title must not be empty"),
-	body("messageText").trim().isLength({ min: 1 }).withMessage("Text must not be empty"),
-	async (req, res, next) => {
-		const newMessage = new MessageModel({
-			title: req.body.messageTitle,
-			text: req.body.messageText,
-			createdBy: req.user,
-		})
-
-		await newMessage.save()
-		res.redirect('/')
-	}
-])
+router.post('/create-message', controllers.postCreateMessage)
 
 module.exports = router;
 
