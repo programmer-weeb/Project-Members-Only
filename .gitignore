@@ -1,2 +1,7 @@
 node_modules
 .env
+.vs/ProjectSettings.json
+.vs/slnx.sqlite
+.vs/VSWorkspaceState.json
+.vs/Project Members Only/FileContentIndex/f76829a4-a083-4de6-845d-9aafee101967.vsidx
+.vs/Project Members Only/v17/.wsuo
